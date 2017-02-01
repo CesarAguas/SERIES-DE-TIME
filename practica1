@@ -1,0 +1,8 @@
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/modulos/enilems/2012/microdatos/enilems12_bd_dbf.zip",temporal)
+files = unzip(temporal,list = TRUE)$Name
+unzip(temporal, files = files[grepl("dbf",files)])
+
+install.packages("foreign")
+require (foreign)
+enilem <- data.frame(read.dbf("cbasico.dbf"))
