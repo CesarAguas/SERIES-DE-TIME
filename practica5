@@ -1,0 +1,112 @@
+## buscamos INEGI
+## buscamos la ST
+#ubicar la ruta de la ST en la computadora
+## importamos en R el archivo .csv 
+## reconocer el archivo como ST
+
+ejercicio 
+### generar 4 objetos con datos aleatorios y que tengan 60 datos
+### objeto 1 de número de profesionista (mill)rango 5 a 8
+## objeto 2  de crec pib rango de 0 5
+## objeto 33 porcentaje de ocupados rango de 40 a 60
+## objeto de 4 porcentaje de desocupados rango de 3 a 8 
+
+prof <- sample(5:8, 60, replace = TRUE)
+pib<- sample(0:5, 60, replace = TRUE)
+ocup<- sample(40:60, 60, replace = TRUE)
+deso<- sample(3:8, 60, replace = TRUE)
+
+## una vez que generen los datos hacer un data frame 
+# de los cuatro objetos
+
+x <- data.frame(prof, pib, ocup, deso)
+
+x### mostrar en consola los primeos 12 y ultimos 12 datos 
+
+x12<- x [1:12, ]
+x [49:60, ]
+
+# covertir los objetos en series de tiempo 
+prof1<-ts(prof,start = 2010,frequency = 12)##[renglon, columna]
+pib1ts<-ts(pib,start = 2010,frequency = 12)
+ocup1<-ts(ocup,start = 2010,frequency = 12)
+deso1<-ts(deso,start = 2010,frequency = 12)
+
+
+profst <- ts(x[,1],start = 2010, frequency = 12)
+
+end(prof1)
+end(profst)
+
+
+## graficar los profesionistas y ocupados
+
+plot(cbind(prof1, ocup1))
+
+plot(cbind(pib1, deso1))
+
+plot(cbind(prof1, ocup1, prof1, ocup1))
+
+plot.ts(x[ , c(1,3)])
+
+xts <- ts.intersect (prof1, ocup1, pib1, deso1)
+#### practica
+
+pib <- ts(read.csv("C:\\Users\\Sala-D\\Desktop\\pib_mexico.csv"))
+pib
+pib1 <-ts(pib[1:11,c(-1)],start = 1980, frequency = 1)
+pib1 
+plot(pib1)
+pib2 <-ts(pib[12:21,-1],start = 1980, frequency = 1)
+pib2
+plot(pib2)
+pib3 <-ts(pib[22:31,-1],start = 1980, frequency = 1)
+pib3
+plot(pib3)
+pib4 <-ts(pib[32:35,-1],start = 1980, frequency = 1)
+plot(pib4)
+  plot(cbind(pib1, pib3))
+
+###-------------------------------------------------------
+
+seriemultiple <- ts.intersect(prof1,pib1ts,deso1,ocup1)## serie de tiempo multiple
+plot(seriemultiple, main = "series de tiempo multiple" , xlab = "Años", ylab = "Numero de personas", col="darkgreen", type = "l", pch = 2)  
+  
+end(seriemultiple)  
+  
+seriemultiple02.07<-window(seriemultiple, start=c(2010,1), end=c(2014,1))
+plot(seriemultiple02.07, main = "series de tiempo multiple" , xlab = "Años", ylab = "Numero de personas", col="darkgreen", type = "o", pch = 21)
+
+###--------------------------EJERCICIO -------------------------------##
+#obtener 4 series de tiempo cada quien elige coo minimo 30 datos....
+## Las series de tiempo que tienen que tener sustento para compararlas
+
+
+div <- ts(read.csv("C:\\Users\\Sala-D\\Desktop\\divocios.csv"))
+div1 <- ts(div, start = 1990, frequency = 1)
+div1
+total <- ts(div1[,2], frequency = 1)
+total
+admon <- ts(div1[,3], frequency = 1)
+judicial <- ts(div1[,4], frequency = 1)
+relacion <- ts(div1[,4], frequency = 1)
+
+plot(cbind(total, admon, judicial, relacion))
+
+seriemultiple<-ts.intersect(total, admon, judicial, relacion)
+plot(seriemultiple, main = "series de tiempo multiple" , xlab = "Años", ylab = "Numero de personas", col="darkgreen", type = "o", pch = 10)
+
+end(seriemultiple)
+seriemultiple90.99<-window(seriemultiple, start=c(1,1), end=c(9,1))
+seriemultiple20.2009<-window(seriemultiple, start=c(10,1), end=c(19,1))
+seriemultiple10.15<-window(seriemultiple, start=c(20,1), end=c(26,1))
+
+
+plot(seriemultiple90.99, main = "series de tiempo multiple" , xlab = "Años", ylab = "Numero de personas", col="darkgreen", type = "p", pch = 19,cex = 1)
+plot(seriemultiple20.2009, main = "series de tiempo multiple" , xlab = "Años", ylab = "Numero de personas", col="blue", type = "p", pch = 21)
+plot(seriemultiple10.15, main = "series de tiempo multiple" , xlab = "Años", ylab = "Numero de personas", col="darkred", type = "o", pch = 34)
+
+plot(seriemultiple, main = "series de tiempo multiple" , xlab = "Años", ylab = "Numero de personas", col=c("darkgreen","blue", "darkblue","yellow"), type = "p")
+
+
+plot.ts(div1, col= c("darkgreen","blue", "darkblue","yellow"), plot.type="single")
