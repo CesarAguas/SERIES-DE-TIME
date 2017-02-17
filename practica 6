@@ -1,0 +1,40 @@
+
+#para descomponer una serie de tiempo graficamente 
+# una funcion que se llama decompose, por lo que
+# es importante reconocer la serie de tiempo
+#graficamente
+
+desoc <- sample(3:8,44, replace = T)
+tdesoc <- ts (desoc, frequency= 4, start = 2005)
+plot(decompose(tdesoc))
+##---------------------------------------------------------------
+
+tiie <- ts(read.csv("C:\\Users\\Sala-D\\Desktop\\TIIE2015.csv"))
+
+sttiiee <- ts(pib, frequency = 12, start = 2005)
+plot(decompose(sttiiee))
+###########- -----------------------------------------------------
+pib <- ts(read.csv("C:\\Users\\Sala-D\\Desktop\\pib1.csv"))
+
+stpib <- ts(pib, frequency = 4, start = 2007)
+plot(pib)
+plot(decompose(stpib))
+
+View(stpib)
+depib <- decompose(stpib)
+names(depib)
+
+depib$trend
+depib$seasonal
+##############-----------------------------------------------------
+# serie uno consumo de mx anuales [renglon 9:43, columna k]
+con<- ts(read.csv("C:\\Users\\Sala-D\\Desktop\\serie1.csv"))
+
+con1<- con[9:43,11]
+
+tscon <- ts(con1, frequency = 12, start = 2014)
+plot(decompose(tscon))
+decon <- decompose(tscon)
+decon$seasonal
+decon$trend
+decon$random
