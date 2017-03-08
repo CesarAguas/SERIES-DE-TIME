@@ -1,0 +1,38 @@
+### aditivo o multiplicativo
+
+## aditivo se utliza cuando la magnitud de la fluctuaciones estacionales de la 
+## serie no varian al hacerlo la tendencia
+
+### multiplicativo##
+## Estos modelos son apropiados cuando la magmitud de las fluctuaciones 
+##estacionales de las series crece y decrece proporcionalmente 
+### con los crecimientos y decrecimientos de la tendencia, respect.
+
+## ahora como vimos la clase pasada hay dos modelos que podemos descomponer la st
+## 1) modelo aditivo ....... x t= m t+ s t+ z t
+### 2) modelo multiplicativo ...... x t = m t * s t* z t
+
+### ahora para decmopner una serie de tiempo en un modelo multiplicativo 
+deso<- data.frame(read.csv("C:\\Users\\Sala-D\\Desktop\\tarea2.csv"))
+desot <- ts(deso, frequency = 4, start = 2005)
+dectsd <- decompose(desot)
+dectsdnul <- decompose(desot, type = "mult")
+
+## graficos de modelo
+plot(dectsd)
+plot(dectsdnul)
+
+### desestacionalizar una serie de tiempo por diferentes razones
+## entre las que destacan desestacionalizar para poder predecir nuestros datos
+## con mayor precision y sin contar con factores externos al comportamiento 
+## de nuestros datos dos elementos que permiten desestacionalizar un serie
+
+install.packages("fpp")
+require (fpp)
+eeadj <- seasadj(dectsd)
+eeadj
+plot(eeadj)
+
+sinesta <- desot - dectsd$seasonal
+
+eeadj- sinesta
