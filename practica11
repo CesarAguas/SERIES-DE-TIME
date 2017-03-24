@@ -1,0 +1,31 @@
+des <- read.csv("C:\\Users\\Sala-D\\Desktop\\tarea2.csv")
+dests<-ts(des)
+### metodo de la deriva
+### este metodo consiste en que el pronostico pude incrementar o reducirse
+### dependiendo del promedio de los cambios historicos de la serie de tiempo
+
+### R =  rwf(serie, h= num de ponder, drift = TRUE)
+require(forecast)
+rwf(dests, h= 4, drift= TRUE)
+
+
+desoc <- meanf(dests, h=10)### metodo del promedio
+desoc2 <- naive(dests, h=10)
+desoc3 <- snaive(dests, h=10)
+desoc4 <- rwf(dests, h=10, drift = T)
+x11()
+plot(desoc, main=" pronostico de Desocupacion trimiestral")
+lines(desoc2$residuals, col="green")
+lines(desoc3$residuals, col="blue")
+lines(desoc4$residuals, col="pink")
+
+legend("topleft", lty = 1, col=c("green","blue","pink"), legend=c("media","ingenuo", "ingenuo estacional", "deriva"))
+
+names(desoc2)
+
+#### una st de 2005 a 2015 
+#### de 2005 a 2010 y 4 pronosticos
+#### Valores reales (2011 a 2015) - pronosticos
+### ingenuo
+### deriva
+### ingenuo estacionario
