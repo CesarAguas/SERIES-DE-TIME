@@ -1,0 +1,29 @@
+asal <- data.frame(read.csv("C:\\Users\\Sala-D\\Desktop\\indicadores.csv", header = T)[7, 2:49])
+
+asalst <- t((asal))
+
+asalst<- as.numeric(asalst)
+
+asat <- ts(asalst, start = 2005, frequency = 4)
+
+
+#### suevizado en R #########################
+require(forecast)
+
+mod1 <- ses(asat, alpha = 0.1, initial = "simple", h=8)
+
+mod2 <- ses(asat, alpha = 0.3, initial = "simple", h=8)
+
+mod3 <- ses(asat, alpha = .95, initial = "simple", h=8)
+
+x11()
+plot(mod1, ylab="asalariados",xlab="años", main = "asalariados", type = "o")
+lines(mod1$fitted, col="brown", type = "o")
+lines(mod2$fitted, col="red", type = "o")
+lines(mod3$fitted, col="darkgreen", type = "o")
+lines(mod1$mean, col="brown", type = "o")
+lines(mod2$mean, col="red", type = "o")
+lines(mod3$mean, col="darkgreen", type = "o")
+
+legend("topleft", lty=1, col = c(1, "blue", "red", "green"), c("datos", expression(alpha==0.1), expression(alpha=0.3), expression(alpha==1), pch=11))
+                         
