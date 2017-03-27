@@ -1,0 +1,35 @@
+des <- read.csv("C:\\Users\\Sala-D\\Desktop\\tarea2.csv")
+des
+des5 <- des[1:24,]
+des5
+
+desst1 <- ts(des, start=2005, frequency = 4)
+
+desst <- ts(des5,start=2005, frequency = 4)
+desst
+
+require(forecast)
+desoc1 <- meanf(desst, h=20)
+
+desoc2 <- naive(desst, h=20)
+desoc3 <- snaive(desst, h=20)
+desoc4 <- rwf(desst, h=20, drift = T)
+
+
+desoc1
+desoc2
+desoc3
+desoc4
+
+x11()
+plot(desst1, main=" pronostico de Desocupacion trimiestral")
+lines(desoc2$mean, col="darkgreen")
+lines(desoc2$mean, col="green")
+lines(desoc3$mean, col="blue")
+lines(desoc4$mean, col="pink")
+
+legend("topleft", lty = 1, col=c("darkgreen","green","blue","pink"), legend=c("media","ingenuo", "ingenuo estacional", "deriva"))
+
+names(desst1)
+
+names(desoc2)
