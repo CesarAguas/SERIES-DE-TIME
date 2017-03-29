@@ -1,0 +1,105 @@
+############ EXAMEN PRIMER PARCIAL- SEGUNDA PARTE ######################
+
+x1 <- sample(15:35,250, replace=TRUE)
+x2 <- sample(100:200,250, replace=TRUE)
+x3 <- sample(29:49,250, replace=TRUE)
+x4 <- sample(42:162,250, replace=TRUE)
+x5 <- sample(30:150,250, replace=TRUE)
+
+xd <- data.frame(x1,x2,x3,x4,x5)
+
+##### jalar los datos
+
+x1.1<- xd$x1
+x2.1<- xd$x2
+x3.1<- xd$x3
+x4.1<- xd$x4
+x5.1<- xd$x5
+
+### convertir en series de tiempo empezando el tercer mes
+
+x1.st <- ts(x1.1, start = c(1990, 3), frequency = 12)
+x1.st
+x2.st <- ts(x2.1, start = c(1990, 3), frequency = 12)
+x2.st
+x3.st <- ts(x3.1, start = c(1990, 3), frequency = 12)
+x3.st
+x4.st <- ts(x4.1, start = c(1990, 3), frequency = 12)
+x4.st
+x5.st <- ts(x5.1, start = c(1990, 3), frequency = 12)
+x5.st
+
+############### separar los datos de x1 de 1990 a 2003 y x2 de 1998 a 2006
+install.packages("fpp")
+require(fpp)
+
+x1cor<-window(x1.st,start=c(1990,3), end=c(2003,12))
+x1cor
+x2cor<-window(x2.st,start=c(1998,1), end=c(2006,12))
+x2cor
+
+plot(x1cor, main="series de tiempo", ylab= "examen-grafica1", xlab="años", col="darkblue", pch=24)
+
+plot(x2cor, main="series de tiempo", ylab= "examen-grafica2", xlab="años", col="darkgreen", pch=18)
+
+############ separar con corchetes las serie 3 y 5 de 150 a 250
+
+x3cor<- x3.st[c(150:250,3)]
+x3cor
+
+x5cor<- x5.st[c(150:250,5)]
+x5cor
+
+######### generar dataframe de tendencia y estacionariedad
+
+x1.desc<-decompose(x1.st)
+names(x1.desc)
+x1.ten<-x1.desc$trend
+x1.ten
+x1.sen<-x1.desc$seasonal
+
+x2.desc<-decompose(x2.st)
+x2.ten<-x2.desc$trend
+x2.sen<-x2.desc$seasonal
+
+x1y2ten<-data.frame(x1.ten,x2.ten)
+x1y2sen<-data.frame(x1.sen,x2.sen)
+
+##### de las 5 series obtener correlacion, varianza y la fn de autocorrelacion
+
+var(x1.st)
+var(x2.st)
+var(x3.st)
+var(x4.st)
+var(x5.st)
+cor(x1.st,x2.st)
+cor(x3.st,x4.st)
+cor(x5.st,x1.st)
+
+acf(x1.st)
+#### se puede ver que la primer serie si tiene ruido blanco ya que sus valore
+#### son cercanos a 0 por lo tanto no tienen relacion entre ellos
+acf(x2.st)
+### si es de ruido balnco cumpre con el primer dato que es que la coorelacion es 
+### igual a 1
+acf(x3.st)
+### si es de ruido blanco
+acf(x4.st)
+### si es de ruido blanco
+acf(x5.st)
+### si es de ruido blanco
+
+###### graficar 5 series juntas
+x11()
+plot(x1.st, ylab="examen",xlab="años", main = "series de tiempo", type = "o")
+lines(x2.st, col="brown", type = "o")
+lines(x3.st, col="red", type = "o")
+lines(x4.st, col="darkgreen", type = "o")
+lines(x5.st, col="darkblue", type = "o")
+
+legend("topleft", lty=1, col = c( "brown", "red", "darkgreen","darkblue"), c("serie1","serie2","serie3","serie4","serie5", pch=11))
+
+
+########### exportacion de base de datos usando liga 
+
+doc <- read.csv("C:\\Users\\Sala-D\\Desktop\\tasainfo.csv")
