@@ -1,0 +1,52 @@
+des <- ts (read.csv("C:\\Users\\Sala-D\\Downloads\\tarea2.csv"), frequency = 4, start = 2005)
+
+require(questionr)
+require(fpp)
+mod1 <- ses(des, alpha=0.1, initial="simple", h=8)
+mod2 <- ses(des, alpha=0.3, initial="simple", h=8)
+mod3 <- ses(des, alpha=0.9, initial="simple", h=8)
+mod4 <- ses(des, alpha=0.95, initial="simple", h=8)
+
+plot(mod1, ylab = "pib", xlab = "años", main = "pib", type = "o")
+lines(fitted(mod1), col="brown", type="o")
+lines(fitted(mod2), col="blue", type="o")
+lines(fitted(mod3), col="red", type="o")
+lines(fitted(mod4), col="green", type="o")
+
+aa <- des-mod1$fitted ##### valores de ,i st vs mis proyecciones
+aa
+
+mean(abs(aa))####### MAE media de los residuales 
+
+sqrt(mean(aa^2)) RMSE
+
+#################### funcion en R
+
+evalm1 <- accuracy(mod1) #### medidas para evalura el modelo 2
+evalm1
+
+##### mod 2
+b <- des-mod2$fitted ##### valores de ,i st vs mis proyecciones
+b
+mean(abs(b))
+sqrt(mean(b^2))
+eb <- accuracy(mod2)
+eb
+
+##### mod 3
+c <- des-mod3$fitted ##### valores de ,i st vs mis proyecciones
+c
+mean(abs(c))
+sqrt(mean(c^2))
+ec <- accuracy(mod3)
+ec
+
+##### mod 4
+d <- des-mod4$fitted ##### valores de ,i st vs mis proyecciones
+d
+mean(abs(d))
+sqrt(mean(d^2))
+ed <- accuracy(mod4)
+ed
+####### el mejor modelo es el 3 porque es el que mas se acerca a nuestro modelo y su mae es el
+##### mas cercano a cero
