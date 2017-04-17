@@ -1,0 +1,69 @@
+tvaz <- ts (read.csv("C:\\Users\\Sala-D\\Desktop\\tvazteca.csv"), frequency = 261, start = 2016)
+require(foreign)
+require(questionr)
+require(fpp)
+mod1 <- ses(tvaz, alpha=0.2, initial="simple", h=1)
+mod2 <- ses(tvaz, alpha=0.4, initial="simple", h=1)
+mod3 <- ses(tvaz, alpha=0.6, initial="simple", h=1)
+mod4 <- ses(tvaz, alpha=0.8, initial="simple", h=1)
+
+plot(tvaz, ylab = "tv azteca", xlab = "años", main = "acciones (cierre)", type = "o")
+lines(fitted(mod1), col="brown", type="o")
+lines(fitted(mod2), col="blue", type="o")
+lines(fitted(mod3), col="red", type="o")
+lines(fitted(mod4), col="darkgreen", type="o")
+
+#### el mejor ajuste a tv azteca resulta el modelo 4 es el que menos disparidad logra 
+#### tener con los datos originales
+
+plot(tvaz, ylab = "tv azteca", xlab = "años", main = "acciones (cierre)", type = "o")
+lines(fitted(mod4), col="darkgreen", type="o")
+
+##### mae y RMSe
+eval1<-accuracy(mod1)
+eval1
+eval2<-accuracy(mod2)
+eval2
+eval3<-accuracy(mod3)
+eval3
+eval4<-accuracy(mod4)
+eval4
+
+aa1 <- tvaz-mod1$fitted ##### valores de ,i st vs mis proyecciones
+a1<-mean(abs(aa1))####### MAE media de los residuales 
+b1<-sqrt(mean(aa1^2)) ##RMSE
+
+aa2 <- tvaz-mod2$fitted 
+a2<-mean(abs(aa2))
+b2<-sqrt(mean(aa2^2)) 
+
+aa3 <- tvaz-mod3$fitted 
+a3<-mean(abs(aa3)) 
+b3<-sqrt(mean(aa3^2)) 
+
+aa4<- tvaz-mod4$fitted 
+a4<-mean(abs(aa4)) 
+b4<-sqrt(mean(aa4^2)) 
+
+MAE<-data.frame(a1,a2,a3,a4)
+MAE
+RMSE<-data.frame(b1,b2,b3,b4)
+RMSE
+
+min<-min(MAE)
+
+if(min==a1) print("Mod1 es el mejor con alpha=.2")
+if(min==a2) print("Mod2 es el mejor con alpha=.4")
+if(min==a3) print("Mod3 es el mejor con alpha=.6")
+if(min==a4) print("Mod4 es el mejor con alpha=.8")
+
+minrms<-min(RMSE)
+
+if(minrms==b1) print("Mod1 es el mejor con alpha=.2")
+if(minrms==b2) print("Mod2 es el mejor con alpha=.4")
+if(minrms==b3) print("Mod3 es el mejor con alpha=.6")
+if(minrms==b4) print("Mod4 es el mejor con alpha = .8")
+
+plot(tvaz)
+### muestra tendencia a inestable en todo el preriodo aunque por lapsos se ve una gran alsa
+### y estacionariedad no tine, no repite datos constantemente
