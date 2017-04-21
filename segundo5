@@ -1,0 +1,50 @@
+########### ejercicio ##############
+
+## 2 series de tiempo con tendencia alta y baja, cortar las series en el 80% de sus datos 
+## graficar los cuatro modelos con el original
+
+x<-sample(23:54,30,replace = FALSE)
+y<-sample(15:31,30,replace = FALSE)
+
+xts<- ts(x)
+yts<-ts(y)
+
+xtscor<-xts[1:24]
+ytscor<-yts[1:24]
+
+require(fpp)
+lins<- holt(xtscor,initial = "simple", h=6)## holt lineal simple
+expo<-holt(xtscor, initial = "simple", exponential = TRUE, h=6)### tendencia exponencial
+class(expo)
+  expo<-as.double(as.(expo))
+  class(expo)
+tadit<-holt(xtscor, damped = TRUE, h=6)## tendencia aditiva amortiguada
+tmult<- holt(xtscor, exponential = T, damped = T, h=6)## tendencia multiplicativa amortiguada
+tmult$mean
+orig<- xts[25:30]### datos originales
+
+names(tmult)
+
+x11()
+plot(xtscor,main = "aproccimaciones", ylab = "tipo de cambio", xlab = "años", col="red", type = "o")
+lines(mean(orig),col="red",type = "o")
+lines(mean(lins),col="darkgreen",type = "o")
+lines(mean(expo),col="blue",type = "o")
+lines(mean(tadit),col="brown",type = "o")
+lines(mean(tmult),col="pink",type = "o")
+
+############# segunda serie de tiempo #########
+
+linsy<- holt(ytscor,initial = "simple", h=6)## holt lineal simple
+expoy<-holt(ytscor, initial = "simple", exponential = TRUE, h=6)### tendencia exponencial
+tadity<-holt(ytscor, damped = TRUE, h=6)## tendencia aditiva amortiguada
+tmulty<- holt(ytscor, exponential = T, damped = T, h=6)## tendencia multiplicativa amortiguada
+origy<- yts[25:30]### datos originales
+
+x11()
+plot(ytscor,main = "aproccimaciones", ylab = "tipo de cambio", xlab = "años", col="balk", type = "o")
+lines(mean(origy),col="blak",type = "o")
+lines(mean(linsy),col="darkgreen",type = "o")
+lines(mean(expoy),col="blue",type = "o")
+lines(mean(tadity),col="brown",type = "o")
+lines(mean(tmulty),col="darkpink",type = "o")
