@@ -1,0 +1,5 @@
+ICA <- read.csv("C:\\Users\\Sala-D\\Desktop\\ICA.MX.csv")
+ICAts <- ts(ICA,start = 2016, frequency = 252)
+ICAts
+acf(ICAts)
+plot(ICAts)
