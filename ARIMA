@@ -1,0 +1,58 @@
+
+install.packages("foreign")
+require(foreign)
+
+install.packages("fpp")
+require(fpp)
+cem <- (read.csv("C:\\Users\\Sala-D\\Desktop\\CEMEX.csv"))
+
+bimb <- (read.csv("C:\\Users\\Sala-D\\Desktop\\CEMEX.csv"))
+
+
+tscem <- ts (cem, frequency=251,start=2016)
+tsbim <- ts (bimb, frequency=251,start=2016)
+
+### 1) revisar si nuestra serie es estacionaria
+### se aplica la prueba de raiz untaroa a traves  de la función 
+### adf.test y esperamos que el p-value sea menor a .05
+
+adf.test(tsbim)
+dbimts <- diff(tsbim) ### aplicamos la primera diferenciacion con la funcion diff
+## debido a que la serie original no es estacionaria
+
+adf.test(dbimts)
+### que nuestra muestra serie en su primera diferenciacion se convierte en estacionaria
+### correlogramas
+
+acf(dbimts) ### em este determinamos el numero de que se se asocia con los modelos
+### de promedios moviles
+### para determinar el valor de p que se relaciona con los modelos autorregresivos se utliza 
+### la funcion pacf()
+pacf(dbimts) ### segun el correlograma de pacf el valor de p
+### es 1, por lo que se propone un modelo ARIMA (1,1,2)
+modbim <- Arima(tsbim, order = c(1,1,2))
+modbim
+modbim1 <- Arima(tsbim, order = c(2,1,2))
+modbim1
+## estre estos dos modelos habría qie revisar el valor de AICc y el menor valor de AICc sera el mejor
+## modelo con el criterio de AIKAIKE
+
+modres <- residuals(modbim)
+Box.test(modres,lag=12, type="Ljung-Box")## p value grande sugiere
+## residuales son ruidos blancos
+mod1<-forecast(modbim, h=12)
+x11()
+plot(forecast(modbim,h=12), include = 18)
+mod1
+summary(mod1)
+
+auto.arima(tsbim)
+
+modbim2 <- Arima(tsbim, order = c(0,1,0))
+modbim2
+mod1res <- residuals(modbim2)
+Box.test(mod1res,lag=12, type="Ljung-Box")## p value grande sugiere
+## residuales son ruidos blancos
+mod1<-forecast(modbim2, h=12)
+x11()
+plot(forecast(modbim2,h=12), include = 18)
